@@ -1,0 +1,18 @@
+.gridBox {
+  background-color: #669999;
+  background: #669999;
+  text-shadow: 1px 1px 5px black;
+
+  border-radius: 3px;
+}
+
+.moveTextView {
+  background-color: #669999;
+  background: #669999;
+  text-shadow: 1px 1px 5px black;
+  border-radius: 3px;
+}
+
+.announcerLabel {
+  font-size: 20px;
+}

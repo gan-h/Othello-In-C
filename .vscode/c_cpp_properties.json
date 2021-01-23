@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "name": "include paths",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "/msys64/mingw64/bin/../include/gtk-3.0",
+        "/msys64/mingw64/bin/../include/pango-1.0",
+        "/msys64/mingw64/bin/../include",
+        "/msys64/mingw64/bin/../include/glib-2.0",
+        "/msys64/mingw64/bin/../lib/glib-2.0/include",
+        "/msys64/mingw64/bin/../include/harfbuzz",
+        "/msys64/mingw64/bin/../include/freetype2",
+        "/msys64/mingw64/bin/../include/libpng16",
+        "/msys64/mingw64/bin/../include/fribidi",
+        "/msys64/mingw64/bin/../include/cairo",
+        "/msys64/mingw64/bin/../include/lzo",
+        "/msys64/mingw64/bin/../include/pixman-1"
+      ]
+    }
+  ],
+  "version": 4
+}
