@@ -11,12 +11,6 @@ A program for playing Othello against a minimax computer player. Supports loadin
   - Signals: GTK event handler signals are used to make the GUI responsive. 
   - Finding information about files: A file save-as GUI, and file load-from GUI presents files in a sorted manner for loading and saving games. 
   
-### Project Breakdown
-  - A GTK user interface       
-  - Human vs. Computer functionality
-  - Loading / Creating game files  
-  - Order game files by date/last modified
-  
 ### Data Structures/Algorithms
   - The board is represented by a 2D array of ints
   - An array contains all boards generated as the player plays against the computer
