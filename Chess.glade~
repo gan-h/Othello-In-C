@@ -1283,7 +1283,7 @@
         </child>
         <child>
           <object class="GtkButton" id="newGame">
-            <property name="label" translatable="yes">Load Game</property>
+            <property name="label" translatable="yes">New Game</property>
             <property name="name">newGame</property>
             <property name="width-request">93</property>
             <property name="height-request">35</property>

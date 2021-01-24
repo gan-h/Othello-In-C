@@ -35,6 +35,7 @@ GtkWidget *announcer;
 
 int currentPlayer = BLACK;
 bool preventSave = false;
+bool guidesOn = true;
 
 int currentBoard[8][8] = {
     {0,0,0,0,0,0,0,0},
@@ -67,6 +68,22 @@ bool legalMoveHelper(int boardState[8][8], int row, int col, int rowInc, int col
 int getOpponent(int currentPlayer);
 int* getAllLegalMoves(int boardState[8][8], int player);
 void endGame();
+
+void drawBlackGuides(int boardstate[8][8]){
+    if(guidesOn);
+    else return;
+    int *legalMoves = getAllLegalMoves(boardstate, BLACK);
+    int iterator = 0;
+    while(legalMoves[iterator] != 0){
+        int moveMade = legalMoves[iterator];
+        int i = (moveMade-1) / 8;
+        int j = (moveMade-1) % 8;
+        GtkWidget *blackGuide = gtk_image_new_from_file ("./blackGuide.png");
+        gtk_button_set_image(buttonMappings[i][j], blackGuide);
+        iterator++;
+    }
+    
+}
 
 void redraw_board(int boardState[8][8]){
     int i, j; 
@@ -116,8 +133,8 @@ void backClickedHandler(GtkWidget widget){
 }
 
 void forwardClickedHandler(GtkWidget widget){
-    printf("Forward Pressed\n");
-    printf("boardsRecorded: %d\n   viewBoardNumber: %d", boardsRecorded, viewBoardNumber);
+    // printf("Forward Pressed\n");
+    // printf("boardsRecorded: %d\n   viewBoardNumber: %d", boardsRecorded, viewBoardNumber);
     if(viewBoardNumber == boardsRecorded-1) return;
     else viewBoardNumber++;
     int drawMe[8][8];
@@ -193,7 +210,7 @@ void loadGameFunction(char *filename){
         char loadMoveBuffer[200];
         fgets(loadMoveBuffer, 200, loadFile);
         fclose(loadFile);
-        gtk_label_set_text(GTK_LABEL(announcer), "");
+        gtk_label_set_text(GTK_LABEL(announcer), (const gchar*) "");
         
         //Reset moveHistory
         int i = 0;
@@ -209,6 +226,7 @@ void loadGameFunction(char *filename){
         while( token != NULL ) {
             moveHistory[test++] = atoi(token);
             if(atoi(token) != 0) movesRecorded++;
+            //printf("Move: %d MaxMoves: %d\n", atoi(token), boardsRecorded);
             token = strtok(NULL, s);
         }
         
@@ -483,7 +501,7 @@ int minimax(int player, int depth, int boardState[8][8]){
     //Return minimax'd children scores:
     int finalMove;
     int j = 0;
-    int previousScore = score;
+    int previousScore = -126365825;
     for(j = 0; j < movesCounted; j++){
         score = (player == WHITE) ? max(moveScores[j], score) : min(moveScores[j], score);
         if(previousScore != score){
@@ -525,11 +543,12 @@ int getComputerMove(int player, int depth, int boardState[8][8]){
     //Return minimax'd children scores:
     int finalMove;
     int j = 0;
-    int previousScore = score;
+    int previousScore = -126365825;
     for(j = 0; j < movesCounted; j++){
         score = (player == WHITE) ? max(moveScores[j], score) : min(moveScores[j], score);
         if(previousScore != score){
             finalMove = allMoves[j];
+            //printf("Computer said: %d\n", finalMove);
             previousScore = score;
         }
     }
@@ -580,7 +599,12 @@ char* textMap[8][8] = {
 }; 
 
 void textBoxLogic(int moveList[64]){
+    if(moveList[0] == 0) {
+        gtk_text_buffer_set_text(textbuffer, "", -1);
+        return;
+    }
     char buffer[3000];
+    buffer[2999] = '\0';
     int i = 0;
     for(i=0; moveList[i] != 0; i++){
          int row = (moveList[i]-1) / 8;
@@ -591,16 +615,27 @@ void textBoxLogic(int moveList[64]){
     gtk_text_buffer_set_text(textbuffer, buffer, -1);
 }
 
+void toggleGuideHandler(){
+    guidesOn = !guidesOn;
+    redraw_board(currentBoard);
+    if(guidesOn) drawBlackGuides(currentBoard);
+    if(guidesOn) {
+        gtk_button_set_label(GTK_BUTTON(gtk_builder_get_object(builder, "toggleGuides")), "Guides On");
+    } else {
+        gtk_button_set_label(GTK_BUTTON(gtk_builder_get_object(builder, "toggleGuides")), "Guides Off");
+    }
+}
+
 //Implements game logic for grid buttons clicked
 void gridClickedHandler(GtkWidget *widget, void *data){
+    //printBoard(currentBoard);
     if(viewBoardNumber != boardsRecorded-1) {
         viewBoardNumber = boardsRecorded-1;
         redraw_board(currentBoard);
+        drawBlackGuides(currentBoard);
         return;
     }
     int moveMade = *(int *) g_object_get_data(G_OBJECT(widget), "gridPosition");
-    printf("\n");
-    
 
     int *legalMoves = getAllLegalMoves(currentBoard, currentPlayer);
     if(legalMoves[0] == 0) { //If legalMoves[0] == 0 that means there were no legalMoves found
@@ -611,7 +646,7 @@ void gridClickedHandler(GtkWidget *widget, void *data){
     int iterator = 0;
     int i = (moveMade-1) / 8;
     int j = (moveMade-1) % 8;
-    printf("Col: %d     Row: %d\n", i, j);
+    printf("Row: %d     Col: %d\n", i, j);
     
     for(iterator = 0; legalMoves[iterator] != 0; iterator++){
         if(legalMoves[iterator] == moveMade){
@@ -629,12 +664,15 @@ void gridClickedHandler(GtkWidget *widget, void *data){
             //Computer makes a move
 
             preventSave = true;
-
+            
             int compMove = getComputerMove(currentPlayer, 2, currentBoard);
-            if(compMove == -1) {
+            if(compMove < 0) {
                 endGame();
                 return;
             } 
+            // printf("Comp Move: %d\n", compMove);
+            // printf("Legal Move: %d\n", moveMade);
+
             makeMove(currentPlayer, compMove, currentBoard);
             recordMove(compMove);
             textBoxLogic(moveHistory);
@@ -643,7 +681,7 @@ void gridClickedHandler(GtkWidget *widget, void *data){
             viewBoardNumber = boardsRecorded-1;
             //Flip the current player value:
             currentPlayer = getOpponent(currentPlayer);
-            
+            drawBlackGuides(currentBoard);
             preventSave = false;
             
             break;
@@ -721,11 +759,13 @@ int main(int argc, char *argv[]){
     g_signal_connect(gtk_builder_get_object(builder, "saveGame"), "button-press-event", G_CALLBACK(saveGameHandler), NULL);
     g_signal_connect(gtk_builder_get_object(builder, "loadGame"), "button-press-event", G_CALLBACK(loadGameHandler), NULL);
     g_signal_connect(gtk_builder_get_object(builder, "newGame"), "button-press-event", G_CALLBACK(newGameHandler), NULL);
+    g_signal_connect(gtk_builder_get_object(builder, "toggleGuides"), "button-press-event", G_CALLBACK(toggleGuideHandler), NULL);
 	gtk_builder_connect_signals(builder, NULL);
     announcer = GTK_WIDGET(gtk_builder_get_object(builder, "announcerLabel"));
     newGame = GTK_WIDGET(gtk_builder_get_object(builder, "newGame"));
 	chessboard = GTK_GRID(gtk_builder_get_object(builder, (const gchar*) "chessboard"));
     textbuffer = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "textbuffer1"));
+    
     map_buttons(chessboard);
     myCSS();
     redraw_board(currentBoard);
@@ -733,7 +773,9 @@ int main(int argc, char *argv[]){
 	gtk_widget_show(window);
 
     int ID = g_timeout_add_seconds(1, G_SOURCE_FUNC(timer_handler), NULL);
-
+    if(guidesOn){
+        drawBlackGuides(currentBoard);
+    }
 	gtk_main();
 
 	return 0;
