@@ -32,11 +32,12 @@ A program for playing Othello against a minimax computer player. Supports loadin
 ## Dependencies
   - GTK
   - pkg-config helper tool for compiling 
-  
-##How to install GTK:
+
+## Installing GTK:
   - apt-get install libgtk-3-dev
   
-##How to interact with the program:
+## Interacting with the Program:
+
   - Upon running the program, you will be presented with an interface. To your left will be an Othello board, and to your right will be a textbox with a few buttons underneath. You play as black. Your opponent, white, will automatically make a move once you make yours.
   - Move-guides will by default be enabled. They show you what valid moves you can make. If you would like to toggle them off, click the "Guides Off" button
   - Moves you and the computer make are recorded in the textbox for you to see. 
