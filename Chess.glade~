@@ -1295,8 +1295,26 @@
             </style>
           </object>
           <packing>
-            <property name="x">846</property>
-            <property name="y">706</property>
+            <property name="x">790</property>
+            <property name="y">710</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="toggleGuides">
+            <property name="label" translatable="yes">Guides Off</property>
+            <property name="name">toggleGuides</property>
+            <property name="width-request">93</property>
+            <property name="height-request">35</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <style>
+              <class name="toggleGuides"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">907</property>
+            <property name="y">710</property>
           </packing>
         </child>
         <style>

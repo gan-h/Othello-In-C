@@ -1301,7 +1301,7 @@
         </child>
         <child>
           <object class="GtkButton" id="toggleGuides">
-            <property name="label" translatable="yes">Guides Off</property>
+            <property name="label" translatable="yes">Guides On</property>
             <property name="name">toggleGuides</property>
             <property name="width-request">93</property>
             <property name="height-request">35</property>

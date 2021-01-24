@@ -36,6 +36,7 @@ GtkWidget *announcer;
 int currentPlayer = BLACK;
 bool preventSave = false;
 bool guidesOn = true;
+bool lockGrid = false;
 
 int currentBoard[8][8] = {
     {0,0,0,0,0,0,0,0},
@@ -72,6 +73,7 @@ void endGame();
 void drawBlackGuides(int boardstate[8][8]){
     if(guidesOn);
     else return;
+    if(lockGrid) return;
     int *legalMoves = getAllLegalMoves(boardstate, BLACK);
     int iterator = 0;
     while(legalMoves[iterator] != 0){
@@ -115,7 +117,7 @@ void redraw_board(int boardState[8][8]){
 int viewBoardNumber = 0;
 
 void backClickedHandler(GtkWidget widget){
-    printf("Back Pressed\n");
+    //printf("Back Pressed\n");
     if(viewBoardNumber - 1 >= 0) viewBoardNumber--;
     else return;
     int drawMe[8][8];
@@ -129,7 +131,9 @@ void backClickedHandler(GtkWidget widget){
     }
     
     redraw_board(drawMe);
-    
+    if(viewBoardNumber == boardsRecorded-1){
+        drawBlackGuides(currentBoard);
+    }
 }
 
 void forwardClickedHandler(GtkWidget widget){
@@ -148,6 +152,9 @@ void forwardClickedHandler(GtkWidget widget){
     }
    
     redraw_board(drawMe);
+    if(viewBoardNumber == boardsRecorded-1){
+        drawBlackGuides(currentBoard);
+    }
 }
 
 void saveGameHandler(){
@@ -204,6 +211,7 @@ void saveGameHandler(){
 
 void loadGameFunction(char *filename){
         currentPlayer = BLACK;
+        lockGrid = false;
         FILE *loadFile = fopen(filename, "r+");
         char loadBuffer[4500];
         fgets(loadBuffer, 4500, loadFile);
@@ -273,6 +281,9 @@ void loadGameFunction(char *filename){
             return;
         } 
         free(legalMoves);
+        if(guidesOn){
+            drawBlackGuides(currentBoard);
+        }
 }
 void loadGameHandler(){
     GtkWidget *dialog;
@@ -562,7 +573,7 @@ int getOpponent(int currentPlayer){
 
 void endGame(){
     preventSave = false;
-
+    lockGrid = true;
     int i, j;
     int whiteCount = 0;
     int blackCount = 0;
@@ -617,6 +628,7 @@ void textBoxLogic(int moveList[64]){
 
 void toggleGuideHandler(){
     guidesOn = !guidesOn;
+    viewBoardNumber = boardsRecorded - 1;
     redraw_board(currentBoard);
     if(guidesOn) drawBlackGuides(currentBoard);
     if(guidesOn) {
@@ -646,7 +658,7 @@ void gridClickedHandler(GtkWidget *widget, void *data){
     int iterator = 0;
     int i = (moveMade-1) / 8;
     int j = (moveMade-1) % 8;
-    printf("Row: %d     Col: %d\n", i, j);
+    //printf("Row: %d     Col: %d\n", i, j);
     
     for(iterator = 0; legalMoves[iterator] != 0; iterator++){
         if(legalMoves[iterator] == moveMade){
@@ -744,14 +756,14 @@ gboolean timer_handler(GtkWidget * widget){
 }
 
 void newGameHandler(){
-    loadGameFunction("./NewGame");
     currentPlayer = BLACK;
+    loadGameFunction("./NewGame");
 }
 
 int main(int argc, char *argv[]){
     printf("Wow!\n");
 	gtk_init(&argc, &argv); //init Gtk
-	builder = gtk_builder_new_from_file("chess.glade");
+	builder = gtk_builder_new_from_file("Chess.glade");
 	window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(gtk_builder_get_object(builder, "backButton"), "button-press-event", G_CALLBACK(backClickedHandler), NULL);
