@@ -1,4 +1,4 @@
-# ~~Chess~~ Othello
+# Othello
  
 Team: Haotian Gan, Period 10
 
