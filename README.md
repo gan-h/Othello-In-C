@@ -3,62 +3,53 @@
 Team: Haotian Gan, Period 10
 
 ## Project Description
-A program for playing Othello. The minimum viable product will allow for you to play Othello against yourself, store and load game data, and mark up each game with your own analysis. Additional features will include a computer player, and automatic computer analysis of each game. 
+A program for playing Othello against a minimax computer player. Supports loading and saving games, and has move-guide functionality. 
 
-## Technical Design
-
-### Using Topics Covered in Class
-  - Memory will be dynamically allocated to account for boards positions generated as the Othello game progresses. 
-  - Files will be used to store game data, and parsed to load game data. 
-  - A computer player will be forked from the main process so that any computation it does will not block the main process.
-  - The computer player will communicate with the main process through a named pipe.
-  - File stats <sys/stat.h>, will be used to order player game data by date created, and date last modified.  
+### Topics Used
+  - Memory Allocation: GTK functions used in the program allocate memory. Calloc and malloc are used for storing game data. 
+  - Files: Files are written to and read to in order to load and save games.
+  - Signals: GTK event handler signals are used to make the GUI responsive. 
+  - Finding information about files: A file save-as GUI, and file load-from GUI presents files in a sorted manner for loading and saving games. 
   
-### Project Breakdown and Responsibilities
-  - User interface design        : Haotian Gan
-  - Human vs. Human functionality: Haotian Gan
-  - Loading / Creating game file : Haotian Gan
-  - Order game files by date/last modified/other: Haotian Gan
-  - Self analysis functionality  : Haotian Gan
-  - Computer player (minimax)    : Haotian Gan
-  - Computer analysis            : Haotian Gan
-  
-  See DEVLOG for more specific tasks and contributions.
+### Project Breakdown
+  - A GTK user interface       
+  - Human vs. Computer functionality
+  - Loading / Creating game files  
+  - Order game files by date/last modified
   
 ### Data Structures/Algorithms
-  - The board will be represented by a 2D array of integers, where each number will correspond to a piece (i.e: 2 = white)
-  - Boards will be linked together with a linked list
-  - The computer player will use the minimax algorithm
-  - Game files will be sorted using merge sort
+  - The board is represented by a 2D array of ints
+  - An array contains all boards generated as the player plays against the computer
+  - The computer uses the minimax algorihtm to make moves
+  - Files are written to and read from in a specific way for saving/loading games.
   
-## Project Timeline
-  - 01/13/2021 Initial interface, human vs. human functionality
-  - 01/15/2021 Loading / creating game file, ordering game files
-  - 01/18/2021 Self analysis functionality
-  - 01/21/2021 Computer player, computer analysis
-  - 01/23/2021 Extra time for more features
+## Devlog
+  - 01/15/2021 Finished learning GTK and Glade
+  - 01/17/2021 Finished writing Othello game logic
+  - 01/18/2021 Finished making GUI
+  - 01/19/2021 Finished writing minimax computer player
+  - 01/20/2021 Finished writing move display functionality, moving through past moves functionality, and fixed bugs with the minimax player
+  - 01/21/2021 Finished save game functionality
+  - 01/22/2021 Finished load game functionality
+  - 01/23/2021 Finished move-guide functionality
+  - 01/24/2021 GUi improvements, load game functionality and GUI bug fixes
+  - 01/25/2021 Submitted project
 
-## List of Required Libraries
-  - <gtk/gtk.h> 
-  - Standard C files 
+## Dependencies
+  - GTK
+  - pkg-config helper tool for compiling 
   
 ##How to install GTK:
   - apt-get install libgtk-3-dev
-  - I will try to include gtk into the project directly so that it is easier to compile. 
-
-##Interface Description:
-  - Main page: 
-    - Left Side : 8x8 Othello board
-    - Right Side: Moves made and a two buttons to "travel to" past moves
-  - Analysis page:
-    - Left Side : 8x8 Othello board
-    - Left Side : Click board squares to add a highlight markup
-    - Right Side: Moves made and a two buttons to "travel to" past moves
-    - Right Side Top: Buttons to markup moves as "inaccurate", "mistake", or a "blunder". 
-  - Game files page:
-    - Scroll through rows of games. Each row has a game number, if white won or black won, time the game took, date played
-    - "Open game from file"
-    - "Open game file folder"
   
+##How to interact with the program:
+  - Upon running the program, you will be presented with an interface. To your left will be an Othello board, and to your right will be a textbox with a few buttons underneath. You play as black. Your opponent, white, will automatically make a move once you make yours.
+  - Move-guides will by default be enabled. They show you what valid moves you can make. If you would like to toggle them off, click the "Guides Off" button
+  - Moves you and the computer make are recorded in the textbox for you to see. 
+  - Use the arrow keys to move to past moves and back. If you are viewing a past move, and would like to jump ahead to your present-most move, simply click anywhere 
+    in the grid.
+  - If you would like to save your game for future play, press "Save Game" and choose a location to store your file.
+  - If you would like to load a previously saved game, press "Load Game" and choose a save file.
+  - If you would like to start a new game, press "New Game"
+  - A winner will be declared once the game ends. **Games end when *either* you or your opponent have no moves left to play**
   
-## Instructions on How to Use Project
