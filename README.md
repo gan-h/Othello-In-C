@@ -41,10 +41,10 @@ A program for playing Othello against a minimax computer player. Supports loadin
   - Upon running the program, you will be presented with an interface. To your left will be an Othello board, and to your right will be a textbox with a few buttons underneath. You play as black. Your opponent, white, will automatically make a move once you make yours.
   - Move-guides will by default be enabled. They show you what valid moves you can make. If you would like to toggle them off, click the "Guides Off" button
   - Moves you and the computer make are recorded in the textbox for you to see. 
-  - Use the arrow keys to move to past moves and back. If you are viewing a past move, and would like to jump ahead to your present-most move, simply click anywhere 
-    in the grid.
+  - Use the arrow buttons to move through the game's history. If you are viewing a past move and would like to jump ahead to your present-most move, click anywhere     within the grid. 
   - If you would like to save your game for future play, press "Save Game" and choose a location to store your file.
-  - If you would like to load a previously saved game, press "Load Game" and choose a save file.
+  - If you would like to load a previously saved game for play or for vieiwng its move history, press "Load Game" and choose a save file.
   - If you would like to start a new game, press "New Game"
   - A winner will be declared once the game ends. **Games end when *either* you or your opponent have no moves left to play**
+  - Do not delete the "NewGame" save file or any of the images bundled with this program.  
   
