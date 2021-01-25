@@ -1,9 +1,4 @@
-//TODO 
-//Movelist
-//Textbox
-//File opening
-//Shared memory computer forking
-//run on ubuntu
+
 #include <string.h>
 #include <unistd.h>
 #include <string.h>
