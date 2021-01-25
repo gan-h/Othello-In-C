@@ -636,13 +636,14 @@ void toggleGuideHandler(){
 //Implements game logic for grid buttons clicked
 void gridClickedHandler(GtkWidget *widget, void *data){
     //printBoard(currentBoard);
-    if(lockGrid) return;
+    
     if(viewBoardNumber != boardsRecorded-1) {
         viewBoardNumber = boardsRecorded-1;
         redraw_board(currentBoard);
         drawBlackGuides(currentBoard);
         return;
     }
+    if(lockGrid) return;
     int moveMade = *(int *) g_object_get_data(G_OBJECT(widget), "gridPosition");
 
     int *legalMoves = getAllLegalMoves(currentBoard, currentPlayer);
