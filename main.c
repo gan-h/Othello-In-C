@@ -636,6 +636,7 @@ void toggleGuideHandler(){
 //Implements game logic for grid buttons clicked
 void gridClickedHandler(GtkWidget *widget, void *data){
     //printBoard(currentBoard);
+    if(lockGrid) return;
     if(viewBoardNumber != boardsRecorded-1) {
         viewBoardNumber = boardsRecorded-1;
         redraw_board(currentBoard);
